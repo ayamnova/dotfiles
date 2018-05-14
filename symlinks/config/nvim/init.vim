@@ -1,148 +1,117 @@
-" vim:fdm=marker et fdl=2 ft=vim sts=2 sw=2 ts=2
-
-" Automatically download vim-plug, if not present
-if !filereadable(expand($XDG_CONFIG_HOME.'/nvim/autoload/plug.vim'))
-  echo 'vim-plug not installed, downloading'
-  !curl -fLo "$XDG_CONFIG_HOME/nvim/autoload/plug.vim" --create-dirs
+filetype off                  " required
+"put this line first in ~/.vimrc
+set nocompatible | filetype indent plugin on | syn on "automatically installs vim-plug if it is not installed
+if empty(glob('~/.config/autoload/plug.vim'))
+  silent !curl -fLo ~/.config/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  echo 'vim-plug downloaded, will install plugins once vim loads'
-  augroup VimPlugInstall
-    autocmd!
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-  augroup END
-else
-  " Clear out install on enter
-  augroup VimPlugInstall
-    autocmd!
-  augroup END
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" Read ~/.vimrc as well
-if filereadable(expand($HOME.'/.vimrc'))
-  source $HOME/.vimrc
-endif
+call plug#begin('~/.config/nvim/plugged')
 
-" Plugins {{{
-call plug#begin()
+" COLORS {{{
 
-" Colors {{{
-" A bunch of Base16 colorschemes
-Plug 'chriskempson/base16-vim'
-" Shades indent levels
+"Some really nice looking base16 themes
+Plug 'chriskempson/base16-vim' 
+
+"A solid dark theme (non base16)
+Plug 'dracula/vim' 
+
+"Shade indent levels
 Plug 'nathanaelkane/vim-indent-guides'
+
 " }}}
 
-" System {{{
+" SYSTEM {{{
 
-" Editing {{{
-" Accent autocompletion via gx in normal mode
-Plug 'airblade/vim-accent'
-" <leader>nr open visual selection in sep window
-Plug 'chrisbra/NrrwRgn'
-" Auto-close parens / quotes, requires no config
+"Light-weight status line
+Plug 'vim-airline/vim-airline'
+
+"Themes for airline
+Plug 'vim-airline/vim-airline-themes'
+
+"File explorer
+Plug 'scrooloose/nerdtree' 
+
+" TMUX {{{
+
+"Enables easy pane / window naviagation between nvim and tmux
+Plug 'christoomey/vim-tmux-navigator' 
+
+"Makes tmux and vim share status lines
+Plug 'edkolev/tmuxline.vim' 
+
+" }}}
+
+" EDITOR {{{
+
+
+"Auto-close parens / quotes
 Plug 'cohama/lexima.vim'
-" Shared project settings
-Plug 'editorconfig/editorconfig-vim'
-" Personal snippets
-Plug 'fortes/vim-personal-snippets'
-" Make it easier to find the cursor after searching
-Plug 'inside/vim-search-pulse'
-" Motion via two-character combinations
-" s{char}{char} to move forward to instance of {char}{char}
-" ; for next match
-" <c-o> or `` to go back to starting point
-" s<CR> to repeat last search
-" S to search backwards
-" For text objects, use z (s taken by surround.vim)
-" {action}z{char}{char}
-Plug 'justinmk/vim-sneak'
-" Share clipboard with tmux
-Plug 'cazador481/fakeclip.neovim'
-" Snippet support, see configuration below
-Plug 'SirVer/ultisnips'
-" Comment / uncomment things quickly
+
+"Comment / uncomment things quickly
 " {Visual}gc comment / uncomment selection
 " - gc{motion} comment / uncomment lines for motion
 Plug 'tpope/vim-commentary'
-" Make plugin actions for a few plugins repeatable
-Plug 'tpope/vim-repeat'
-" Readline-style keybindings everywhere (e.g. <C-a> for beginning of line)
-Plug 'tpope/vim-rsi'
-" Needed for orgmode
-" Makes <C-a> and <C-x> able to increment/decrement dates
-Plug 'tpope/vim-speeddating'
+
+
 " Edit surrounding quotes / parents / etc
 " - {Visual}S<arg> surrounds selection
 " - cs/ds<arg1><arg2> change / delete
 " - ys<obj><arg> surrounds text object
 " - yss<arg> for entire line
-Plug 'tpope/vim-surround'
-" Extra motion commands, including:
-" - [f, ]f next/prev file in directory
-" - [n, ]n next/prev SCM conflict
-" Toggles a few options:
-" - coh hlsearch
-" - con number
-" - cos spell
-" - cow wrap
-" Additonal paste options
-" - >p paste and indent
-" - <p paste and deindent
-Plug 'tpope/vim-unimpaired'
-" Replace object with register contents
-" gr{motion} Replace w/ unnamed register
-" "xgr{motion} Replace w/ register x
-Plug 'vim-scripts/ReplaceWithRegister'
+"Plug 'tpope/vim-surround'
+
+
 " Complete words from tmux with <C-x><C-u>
 Plug 'wellle/tmux-complete.vim'
-" }}}
 
-" File/Buffer Handling {{{
+"}}}
+
+" FILE / BUFFER HANDLING {{{
+
 " Use FZF for fuzzy finding if available (see config below)
 if executable('fzf')
   Plug 'junegunn/fzf'
   Plug 'junegunn/fzf.vim'
 end
+
 " Show register contents when using " or @ in normal mode
 " Also shows when hitting <c-r> in insert mode
 Plug 'junegunn/vim-peekaboo'
+
 " Adds helpers for UNIX shell commands
 " :Remove Delete buffer and file at same time
 " :Unlink Delete file, keep buffer
 " :Move Rename buffer and file
 Plug 'tpope/vim-eunuch'
-" Make netrw better
-" - '-' in any buffer to go up to directory listing
-" - cg/cl to cd into the
-" - ! to use the file in a command
-Plug 'tpope/vim-vinegar'
+
 " }}}
 
-" General coding {{{
-" async LanguageServerClient, lots of commands (rename, definitions, etc)
-" No default bindings, see config below
-Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
-" async :make via NeoVim job control, replaces syntastic for showing errors
-" TODO: Use w0rp/ale instead of Neomake and adjust all settings for this
-" https://github.com/w0rp/ale
-" LanguageServer may remove the need for all of this in places, need to figure
-" out what is really needed here.
-" Test.vim: Run tests based on cursor position / file
-Plug 'janko-m/vim-test', { 'for': ['javascript'] }
-" Interactive repl for supported languages
-" :Codi!! Toggle for current buffer
-Plug 'metakirby5/codi.vim'
-" Syntax highlighting and language server
-Plug 'reasonml-editor/vim-reason-plus'
-" Async completion
-Plug 'roxma/nvim-completion-manager'
-" async code formatting
-" :Neoformat <opt_formatter> for entire file
-" :Neoformat! <filetype> for visual selection
-Plug 'sbdchd/neoformat', { 'on': ['Neoformat'] }
+" GENERAL CODING {{{
+
+"Auto-complete pop-up menu, see config below
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+"Asynchronous linting engine
+Plug 'w0rp/ale'
+
+"Language Server Support
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+
+"Snippets
+Plug 'Shougo/neosnippet.vim'
+
+"Default Snippets
+Plug 'Shougo/neosnippet-snippets'
+
 " }}}
 
-" Git {{{
+" GIT {{{
+
 " Run Git commands from within Vim
 " :Gstatus show `git status` in preview window
 " - <C-N>/<C-P> next/prev file
@@ -159,355 +128,185 @@ Plug 'sbdchd/neoformat', { 'on': ['Neoformat'] }
 " - o/O open commit in split/tab
 " - - reblame commit
 Plug 'tpope/vim-fugitive'
+
+
 " Adds gutter signs and highlights based on git diff
 " [c ]c to jump to prev/next change hunks
 " <leader>hs to stage hunks within cursor
 " <leader>hr to revert hunks within cursor
 " <leader>hv to preview the hunk
 Plug 'airblade/vim-gitgutter'
+
 " }}}
 
-" CSS/LESS {{{
-" Better CSS syntax
-Plug 'JulesWang/css.vim', { 'for': ['css', 'less'] }
-" LESS Support
-Plug 'groenewege/vim-less', { 'for': ['less'] }
+" LANGUAGES {{{
+
+" PYTHON {{{
+
+"Python support for deoplete
+Plug 'zchee/deoplete-jedi'
+
 " }}}
 
-" Markdown {{{
-" Nice set of markdown tools
-" <leader>= /  <leader>- toggle checkboxes
-" <leader>[ /  <leader>] change heading level
-" <leader>' to make blockquote out of selection
-" <leader>i to insert / update table of contents
-Plug 'SidOfc/mkdx', { 'for': ['markdown'] }
+" HTML {{{
+
+" Fast HTML coding
+" <C-Y> + n triggers completion
+" ex: div'<C-Y>n'
+" <div> </div>
+Plug 'mattn/emmet-vim' 
+
 " }}}
 
-" Javascript {{{
-if executable('flow')
-  Plug 'flowtype/vim-flow', { 'for': ['javascript'] }
-  Plug 'roxma/ncm-flow',  {'for': ['javascript']}
-endif
-" JS highlighting and indent support. Sometimes buggy, but has support for
-" jsdocs and flow
-Plug 'pangloss/vim-javascript', { 'for': ['javascript']}
-" JS Completion clients for nvim-completion
-Plug 'roxma/nvim-cm-tern',  {'do': 'yarn install', 'for': ['javascript']}
 " }}}
 
-" Typescript {{{
-" Highlighting and indent support
-Plug 'leafgarland/typescript-vim', { 'for': ['typescript']}
-" TODO: Get omnicompletion working well without a mess of plugins
+"Fuzzy file searching until I get fzf working
+Plug 'kien/ctrlp.vim'
+
 " }}}
 
-" Misc coding {{{
-" Pug template support
-Plug 'digitaltoad/vim-pug'
-" }}}
 call plug#end()
+
+"---------------------Environment Setup-------------------------------------
+
+"Enables tab-completion in the commandline
+set wildmenu
+
+
+"---------------------Colorscheme Configuration------------------------------
+
+"Make sure that neovim is aware of the terminal's color settings
+set termguicolors
+
+"Set the colorscheme
+colorscheme dracula
+
+"---------------------PLUGIN CONFIGURATION------------------------------------
+
+" Deoplete {{{
+
+" Autostart deoplete
+let g:deoplete#enable_at_startup = 1
+
+" Keybindings {{{  
+" <C-j> Move down
+" <C-k> Move up
+" <ENTER> Accept completion
+" <Tab> Move through snippet
 " }}}
 
-" Load Vanilla (no-plugin) config
-if filereadable(expand('~/.vimrc'))
-  source ~/.vimrc
-endif
+" Movement within 'ins-completion-menu'
+imap <expr><C-j>   pumvisible() ? "\<Down>" : "\<C-j>"
+imap <expr><C-k>   pumvisible() ? "\<Up>" : "\<C-k>"
 
-" Re-generate spelling files if modified
-for d in glob(fnamemodify($MYVIMRC, ':h').'/spell/*.add', 1, 1)
-  if getftime(d) > getftime(d.'.spl')
-    exec 'mkspell! ' . fnameescape(d)
-  endif
-endfor
+" Scroll pages in menu
+inoremap <expr><C-f> pumvisible() ? "\<PageDown>" : "\<Right>"
+inoremap <expr><C-b> pumvisible() ? "\<PageUp>" : "\<Left>"
+imap     <expr><C-d> pumvisible() ? "\<PageDown>" : "\<C-d>"
+imap <expr><C-u> pumvisible() ? "\<PageUp>" : "\<C-u>"  
 
-" Neovim-only config {{{
-" Useful reference for Neovim-only features (:help vim-differences)
+" <CR>: If popup menu visible, expand snippet or close popup with selection,
+"       Otherwise, check if within empty pair and use delimitMate.
+inoremap <silent><expr><CR> pumvisible() ?
+	\ (neosnippet#expandable() ? neosnippet#mappings#expand_impl() : deoplete#close_popup())
+		\ : (delimitMate#WithinEmptyPair() ? "\<C-R>=delimitMate#ExpandReturn()\<CR>" : "\<CR>")
 
-" Terminal {{{
-" Lots of scrollback in terminal
-let g:terminal_scrollback_buffer_size = 50000
+" <Tab> completion:
+" 1. If popup menu is visible, select and insert next item
+" 2. Otherwise, if within a snippet, jump to next input
+" 3. Otherwise, if preceding chars are whitespace, insert tab char
+" 4. Otherwise, start manual autocomplete
+imap <silent><expr><Tab> pumvisible() ? "\<Down>"
+	\ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
+	\ : (<SID>is_whitespace() ? "\<Tab>"
+	\ : deoplete#manual_complete()))
 
-" Quickly open a shell below current window
-nnoremap <leader>sh :below 10sp term://$SHELL<cr>
+smap <silent><expr><Tab> pumvisible() ? "\<Down>"
+	\ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
+	\ : (<SID>is_whitespace() ? "\<Tab>"
+	\ : deoplete#manual_complete()))
 
-" Send selection to term below
-vnoremap <leader>sp :<C-u>norm! gv"sy<cr><c-w>j<c-\><c-n>pa<cr><c-\><c-n><c-w>k
+inoremap <expr><S-Tab>  pumvisible() ? "\<Up>" : "\<C-h>"
 
-" Terminal key bindings for window switching
-" Map jj and jk to <ESC> to leave insert mode quickly
-" Also allow <leader><C-c> and <leader><esc>
-tnoremap jj <C-\><C-n>
-tnoremap jk <C-\><C-n>
-tnoremap <leader><C-c> <C-\><C-n>
-tnoremap <leader><esc> <C-\><C-n>
+function! s:is_whitespace() "{{{
+	let col = col('.') - 1
+	return ! col || getline('.')[col - 1] =~? '\s'
+endfunction "}}}
 
-" Automatically go into insert mode when entering terminal window
-augroup terminal_insert
-  autocmd!
-  autocmd BufEnter * if &buftype == 'terminal' | :startinsert | endif
-augroup END
-" }}}
-" }}}
-
-if &t_Co >= 256
-  " Upgrade colors if we have more colors, stays with default if not available
-  let base16colorspace=256
-  silent! colorscheme base16-railscasts
-endif
-
-" TODO: Move into .vimrc
-augroup on_vim_enter
-  autocmd!
-  autocmd VimEnter * call OnVimEnter()
-augroup END
-
-" Called after plugins have loaded {{{
-function! g:OnVimEnter()
-  augroup neoformat_autosave
-    autocmd!
-    if exists(':Neoformat')
-      " Run automatically before saving for supported filetypes
-      autocmd BufWritePre *.css,*.less,*.js,*.ts Neoformat
-    endif
-  augroup END
-endfunction
 " }}}
 
-" Plugin Configuration {{{
+" LanguageClient {{{
 
-" Enable tmux to be mapped to '+' register
-let g:vim_fakeclip_tmux_plus=1
+"----> Language Server Configuration
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+    \ 'javascript': ['javascript-typescript-stdio'],
+    \ 'python': ['pyls'],
+    \ }
 
-" LanguageClient-neovim {{{
-" Don't need to automake in supported languages
-augroup automake
-  autocmd!
-  " JavaScript and Typescript lint via language servers
-  autocmd BufWritePost *.sh,*.less,*.css,*.vim,*.vimrc,*.txt,*.md make!
-augroup END
+" <leader>ld to go to definition
+autocmd FileType python nnoremap <buffer>
+  \ <leader>ld :call LanguageClient_textDocument_definition()<cr>
+" <leader>lh for type info under cursor
+autocmd FileType python nnoremap <buffer>
+  \ <leader>lh :call LanguageClient_textDocument_hover()<cr>
+" <leader>lr to rename variable under cursor
+autocmd FileType python nnoremap <buffer>
+  \ <leader>lr :call LanguageClient_textDocument_rename()<cr>
 
-" Automatically start language servers.
+
+"Automatically start language servers
 let g:LanguageClient_autoStart = 1
 
-" Use location list instead of quickfix
-let g:LanguageClient_diagnosticsList = 'location'
+" }}}
 
-augroup LanguageClientConfig
-  autocmd!
+"Airline {{{
 
-  " <leader>ld to go to definition
-  autocmd FileType javascript,python,typescript,json,css,less,html,reason nnoremap <buffer> <leader>ld :call LanguageClient_textDocument_definition()<cr>
-  " <leader>lf to autoformat document
-  autocmd FileType javascript,python,typescript,json,css,less,html,reason nnoremap <buffer> <leader>lf :call LanguageClient_textDocument_formatting()<cr>
-  " <leader>lh for type info under cursor
-  autocmd FileType javascript,python,typescript,json,css,less,html,reason nnoremap <buffer> <leader>lh :call LanguageClient_textDocument_hover()<cr>
-  " <leader>lr to rename variable under cursor
-  autocmd FileType javascript,python,typescript,json,css,less,html,reason nnoremap <buffer> <leader>lr :call LanguageClient_textDocument_rename()<cr>
-  " <leader>lc to switch omnifunc to LanguageClient
-  autocmd FileType javascript,python,typescript,json,css,less,html,reason nnoremap <buffer> <leader>lc :setlocal omnifunc=LanguageClient#complete<cr>
-  " <leader>ls to fuzzy find the symbols in the current document
-  autocmd FileType javascript,python,typescript,json,css,less,html,reason nnoremap <buffer> <leader>ls :call LanguageClient_textDocument_documentSymbol()<cr>
+"use special font symbols
+let g:airline_powerline_fonts = 1
 
-  " Use as omnifunc by default
-  autocmd FileType javascript,python,typescript,json,css,less,html,reason setlocal omnifunc=LanguageClient#complete
-augroup END
+"}}}
 
-let g:LanguageClient_serverCommands = {}
+" activates syntax highlighting among other things
+syntax on
+set t_Co=256
 
-if executable('pyls')
-  let g:LanguageClient_serverCommands.python = ['pyls']
+"make line numbering relative
+set relativenumber
+
+"display command in bottom right corner
+set showcmd
+
+set path+=**
+
+
+"Silver Searcher {{{
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
 endif
 
-if executable('javascript-typescript-stdio')
-  let g:LanguageClient_serverCommands.javascript = ['javascript-typescript-stdio']
-  let g:LanguageClient_serverCommands.typescript = ['javascript-typescript-stdio']
-  let g:LanguageClient_serverCommands.html = ['html-languageserver', '--stdio']
-  let g:LanguageClient_serverCommands.css = ['css-languageserver', '--stdio']
-  let g:LanguageClient_serverCommands.less = ['css-languageserver', '--stdio']
-  let g:LanguageClient_serverCommands.json = ['json-languageserver', '--stdio']
-endif
+"}}}
 
-if executable('ocaml-language-server')
-  let g:LanguageClient_serverCommands.reason = ['ocaml-language-server', '--stdio']
-  let g:LanguageClient_serverCommands.ocaml = ['ocaml-language-server', '--stdio']
-endif
-" }}}
+"KEY BINDINGS {{{
 
-" nvim-completion-manager {{{
-" Use fuzzy matching
-let g:cm_matcher = {'case': 'smartcase', 'module': 'cm_matchers.fuzzy_matcher'}
-" }}}
+" bind K to grep word under cursor
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
-" Test.vim {{{
-" Run test commands in NeoVim terminal
-let test#strategy = 'neovim'
+" bind \ to Ag command
+nnoremap \ :Ag<SPACE>
 
-let test#javascript#mocha#options = {
-  \ 'nearest': '--reporter list',
-  \ 'file': '--reporter list',
-  \ 'suite': '--reporter dot',
-  \ }
+"}}}
 
-" Only works in JS for now
-augroup test_shortcuts
-  autocmd!
+" ------------------- COMMANDS --------------------------
+" bind \ (backward slash) to grep shortcut
+command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 
-  " <leader>tt to test based on cursor, <leader>twt to watch
-  autocmd FileType javascript,typescript nnoremap <buffer> <silent> <leader>tt :TestNearest<cr>
-  autocmd FileType javascript,typescript nnoremap <buffer> <silent> <leader>twt :TestNearest -w<cr><c-\><c-n><c-w><c-k>
-  " <leader>tf to test current file, <leader> twf to watch
-  autocmd FileType javascript nnoremap <buffer> <silent> <leader>tf :TestFile<cr>
-  autocmd FileType javascript nnoremap <buffer> <silent> <leader>twf :TestFile -w<cr><c-\><c-n><c-w><c-k>
-augroup END
-" }}}
-
-" Codi {{{
-" Toggle repl via <leader>cc
-nnoremap <leader>cc :Codi!!<cr>
-" }}}
-
-" Neoformat {{{
-" Use formatprg when available
-let g:neoformat_try_formatprg = 1
-" }}}
-
-" Fuzzy Finding (FZF) {{{
-if executable('fzf')
-  " <C-p> or <C-t> to search files
-  " Open in split via control-x / control-v
-  " Select/Deselect all via alt-a / alt-d
-  onoremap <silent> <C-t> :call fzf#vim#files('', fzf#vim#with_preview())<cr>
-  nnoremap <silent> <C-p> :call fzf#vim#files('', fzf#vim#with_preview())<cr>
-
-  " <M-p> for open buffers
-  nnoremap <silent> <M-p> :Buffers<cr>
-
-  " <M-S-p> for MRU & v:oldfiles
-  nnoremap <silent> <M-S-p> :History<cr>
-
-  " Fuzzy insert mode completion for lines
-  imap <c-x><c-l> <plug>(fzf-complete-line)
-
-  " Use fuzzy completion relative filepaths across directory with <c-x><c-j>
-  imap <expr> <c-x><c-j> fzf#vim#complete#path('git ls-files $(git rev-parse --show-toplevel)')
-
-  " Better command history with <leader>:
-  nnoremap <leader>: :History:<CR>
-
-  " Better search history with <leader>/
-  nnoremap <leader>/ :History/<CR>
-
-  " Fuzzy search help <leader>?
-  nnoremap <leader>? :Helptags<CR>
-
-  " Search from git root via :Rag (Root Ag)
-  " :Rag  - hidden preview enabled with "?" key
-  " :Rag! - fullscreen and preview window above
-  command! -bang -nargs=* Rag
-    \ call GitRootCD() | call fzf#vim#ag(<q-args>,
-    \                 <bang>0 ? fzf#vim#with_preview('up:60%', '?')
-    \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
-    \                 <bang>0)
-
-  " Use fuzzy searching for K & Q, select items to go into quickfix
-  nnoremap K :Rag! <C-R><C-W><cr>
-  vnoremap K :<C-u>norm! gv"sy<cr>:silent! Rag! <C-R>s<cr>
-  nnoremap Q :Rag!<SPACE>
-end
-" }}}
-
-" UltiSnips {{{
-" Use tab to expand snippet and move to next target. Shift tab goes back.
-let g:UltiSnipsExpandTrigger='<tab>'
-" <C-k> fuzzy-finds available snippets for the file with FZF
-" let g:UltiSnipsListSnippets="<C-k>"
-inoremap <C-k> <C-o>:Snippets<cr>
-let g:UltiSnipsJumpForwardTrigger='<tab>'
-let g:UltiSnipsJumpBackwardTrigger='<S-tab>'
-" }}}
-
-" vim-javascript {{{
-" jsdoc syntax
-let g:javascript_plugin_jsdoc = 1
-
-" flow syntax
-let g:javascript_plugin_flow = 1
-" }}}
-
-" Flow {{{
-" Don't typecheck automatically (Async checkers do this already)
-let g:flow#enable = 0
-
-" Don't automatically set omnifunc (use LanguageClient)
-let g:flow#omnifunc = 0
-
-augroup flow_omni
-  autocmd!
-
-  " Switch omnifunc to flow via <leader>fc
-  autocmd FileType javascript nnoremap <buffer> <leader>fc :setlocal omnifunc=flowcomplete#Complete<cr>
-augroup END
-" }}}
-
-" vim-typescript {{{
-" Have prettier to autoformat, so don't bother with indent rules.
-let g:typescript_indent_disable = 1
-" }}}
-
-" GitGutter {{{
-" Unimpaired-style toggling for the line highlights
-" cogg Gutter / cogl line highlight
-nnoremap <silent> cogg :GitGutterToggle<cr>
-nnoremap <silent> cogl :GitGutterLineHighlightsToggle<cr>
-
-" Ignore whitespace
-let g:gitgutter_diff_args='-w'
-
-" Use raw grep
-let g:gitgutter_escape_grep=1
-
-" Don't highlight lines by default (use cogl to toggle)
-let g:gitgutter_highlight_lines=0
-
-" Be aggressive about looking for diffs
-let g:gitgutter_realtime=1
-let g:gitgutter_eager=1
-
-" Tweak signs
-let g:gitgutter_sign_modified='±'
-let g:gitgutter_sign_modified_removed='≠'
-" }}}
-
-" Indent Guides {{{
-" Default guides to on everywhere
-let g:indent_guides_enable_on_vim_startup=1
-
-" Don't turn on mapping for toggling guides
-let g:indent_guides_default_mapping=0
-
-" Don't use their colors, depending on the colorscheme to define
-let g:indent_guides_auto_colors=0
-
-" Wait until we've nested a little before showing
-let g:indent_guides_start_level=3
-
-" Skinny guides
-let g:indent_guides_guide_size=1
-" }}}
-
-" Javascript libraries syntax {{{
-let g:used_javascript_libs='react'
-" }}}
-
-" vim-jsx config {{{
-" Don't require .jsx extension
-let g:jsx_ext_required=0
-" }}}
-
-" }}}
-
-" Local Settings {{{
-if filereadable(expand('~/.nvimrc.local'))
-  source ~/.nvimrc.local
-endif
-" }}}
+"command to make tags file for a given root directory
+command MakeTags !ctags -R .

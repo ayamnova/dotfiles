@@ -8,8 +8,12 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
+# KEYBINDINGS {{{
+# map CAPS_LOCK to escape
 setxkbmap -option caps:escape
+# swap left alt and left ctrl
 setxkbmap -option ctrl:swap_lalt_lctl
+# }}}
 
 # if running bash
 if [ -n "$BASH_VERSION" ]; then

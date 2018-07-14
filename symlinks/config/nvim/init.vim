@@ -45,6 +45,14 @@ Plug 'edkolev/tmuxline.vim'
 
 " EDITOR {{{
 
+"Great defaults for complementary mappings
+" [a previous file in args list
+" ]a next file in args list
+" [b previous buffer
+" ]b next buffer
+" [f previous file
+" ]f next file 
+Plug 'tpope/vim-unimpaired'
 
 "Auto-close parens / quotes
 Plug 'cohama/lexima.vim'
@@ -107,6 +115,7 @@ Plug 'Shougo/neosnippet.vim'
 
 "Default Snippets
 Plug 'Shougo/neosnippet-snippets'
+Plug 'honza/vim-snippets'
 
 " }}}
 
@@ -161,7 +170,7 @@ Plug 'mattn/emmet-vim'
 " }}}
 
 "Fuzzy file searching until I get fzf working
-Plug 'kien/ctrlp.vim'
+"Plug 'kien/ctrlp.vim'
 
 " }}}
 
@@ -207,9 +216,17 @@ imap <expr><C-u> pumvisible() ? "\<PageUp>" : "\<C-u>"
 
 " <CR>: If popup menu visible, expand snippet or close popup with selection,
 "       Otherwise, check if within empty pair and use delimitMate.
-inoremap <silent><expr><CR> pumvisible() ?
-	\ (neosnippet#expandable() ? neosnippet#mappings#expand_impl() : deoplete#close_popup())
-		\ : (delimitMate#WithinEmptyPair() ? "\<C-R>=delimitMate#ExpandReturn()\<CR>" : "\<CR>")
+"inoremap <silent><expr><CR> pumvisible() ? "\<CR>"
+"	\ (neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : deoplete#close_popup()) 
+"	\ : deopolete#manual_complete() 
+"	\ : (<SID>is_whitespace() ? "\<CR>")
+"	(delimitMate#WithinEmptyPair() ? "\<C-R>=delimitMate#ExpandReturn()\<CR>" 
+
+
+"inoremap <silent><expr><CR> pumvisible() ?
+"	\ (neosnippet#expandable() ? neosnippet#mappings#expand_impl() : deoplete#close_popup())
+"\ : (delimitMate#WithinEmptyPair() ? "\<C-R>=delimitMate#ExpandReturn()\<CR>" : "\<CR>")
+
 
 " <Tab> completion:
 " 1. If popup menu is visible, select and insert next item
@@ -260,6 +277,24 @@ let g:LanguageClient_autoStart = 1
 
 " }}}
 
+" FZF {{{
+let g:fzf_action = {
+      \ 'ctrl-s': 'split',
+      \ 'ctrl-v': 'vsplit'
+      \ }
+nnoremap <c-p> :FZF<cr>
+
+" }}}
+
+"NERDTREE {{{
+map <F2> :NERDTreeToggle<CR>
+let NERDTreeWinSize=32
+let NERDTreeWinPos="left"
+let NERDTreeShowHidden=1
+let NERDTreeAutoDeleteBuffer=1
+let NERDTreeAutoDeleteBuffer=1
+"}}}
+
 "Airline {{{
 
 "use special font symbols
@@ -267,6 +302,21 @@ let g:airline_powerline_fonts = 1
 
 "}}}
 
+" LEADER COMMANDS {{{ 
+
+" change leader to comma
+let mapleader=','
+
+" edit zsh config with ,ez
+nnoremap <leader>ez :vsp ~/.zshrc<CR>
+
+" edit init.vim config with ,ev
+nnoremap <leader>ev :vsp $MYVIMRC<CR>
+
+" source init.vim with ,sv
+nnoremap <leader>sv :source $MYVIMRC<CR>
+
+" }}}
 " activates syntax highlighting among other things
 syntax on
 set t_Co=256
@@ -300,7 +350,7 @@ endif
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " bind \ to Ag command
-nnoremap \ :Ag<SPACE>
+nnoremap ,K :Ag<SPACE>
 
 "}}}
 
@@ -310,3 +360,4 @@ command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 
 "command to make tags file for a given root directory
 command MakeTags !ctags -R .
+

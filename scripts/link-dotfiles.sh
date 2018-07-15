@@ -50,12 +50,6 @@ for file in $DOTFILES/symlinks/*; do
   fi
 done
 
-if [ ! -f "$DOTFILES/symlinks/ssh/config" ]; then
-  echo "  $ARROW Creating ~/.ssh/config"
-  cp "$DOTFILES/symlinks/ssh/config.sample" "$DOTFILES/symlinks/ssh/config"
-  echo "$CMARK ~/.ssh/config created"
-fi
-
 if [ ! -f "$HOME/.gitconfig.local" ]; then
   echo "  $ARROW Creating ~/.gitconfig.local"
   cp "$DOTFILES/symlinks/config/git/config.local.sample" "$HOME/.gitconfig.local"

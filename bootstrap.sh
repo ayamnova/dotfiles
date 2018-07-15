@@ -1,4 +1,8 @@
+#Originally written by another user
+#Modified by Karsten Ladner, 2/11/2018
+
 #!/bin/sh
+DOTFILESREPO="https://github.com/ayamnova/dotfiles.git"
 set -ef
 
 CMARK='✓'
@@ -19,6 +23,7 @@ if [ "$OS" = "Linux" ]; then
   if command -v apt-get > /dev/null; then
     # Must have lsb_release installed for Debian/Ubuntu beforehand. Seems
     # to come on EC2 images, but not in chromebook chroots.
+    #lsb-release detects what kind of OS the computer is running
     if ! command -v lsb_release > /dev/null; then
       echo "Installing lsb-release (requires sudo)"
       sudo apt-get -qqfuy install lsb-release
@@ -31,54 +36,16 @@ if [ "$OS" = "Linux" ]; then
       DISTRO="Debian"
     fi
     VERSION=$(lsb_release -s -c)
-  elif [ "$(whoami)" = "chronos" ]; then
-    DISTRO="Chromebook"
-    VERSION="Unknown"
   else
     # Haven't bothered using other distros yet
+    # When using other Distros, add that here
     DISTRO="Unknown"
     VERSION="Unknown"
   fi
-elif [ "$OS" = "Darwin" ]; then
-  echo "$XMARK Mac OS X no longer supported"
-  exit 1
 else
   # What strange machine is this running on?
   DISTRO="Unknown"
   VERSION="Unknown"
-fi
-
-# Cheap way to check if we're on a machine with an active GUI, note that this
-# will give a false positive if logged into the virtual console, but that's
-# likely what the caller wants if they bothered to go the vconsole.
-if [ -z "$DISPLAY" ]; then
-  IS_HEADLESS=1
-else
-  IS_HEADLESS=0
-fi
-
-# Hacky way to check if we're on an EC2 machine, since this command seems to
-# return something like 'us-west-2.compute.internal' in quick tests.
-if hostname -d | grep -iq internal; then
-  IS_EC2=1
-else
-  IS_EC2=0
-fi
-
-if command -v croutonversion > /dev/null; then
-  IS_CROUTON=1
-  if croutonversion | grep -q xorg; then
-    IS_HEADLESS=0
-  fi
-else
-  IS_CROUTON=0
-fi
-
-# Slightly hacky way to see if we are within a Docker container
-if [ -f /.dockerinit ]; then
-  IS_DOCKER=1
-else
-  IS_DOCKER=0
 fi
 
 # Write variables to file
@@ -90,10 +57,13 @@ if [ ! -f "$LOCAL_PROFILE" ]; then
     echo "export OS=$OS"
     echo "export DISTRO=$DISTRO"
     echo "export VERSION=$VERSION"
-    echo "export IS_CROUTON=$IS_CROUTON"
-    echo "export IS_DOCKER=$IS_DOCKER"
-    echo "export IS_EC2=$IS_EC2"
-    echo "export IS_HEADLESS=$IS_HEADLESS"
+
+    #Throwing in some default values so that nothing
+    #will break (hopefully)
+    echo "export IS_CROUTON=0"
+    echo "export IS_DOCKER=0"
+    echo "export IS_EC2=0"
+    echo "export IS_HEADLESS=0"
     echo ""
     echo "# Add machine-specific items below"
     echo "# export LAST_FM_USERNAME=xxx"
@@ -141,62 +111,18 @@ if [ "$OS" = "Linux" ] && command -v apt-get > /dev/null; then
     sudo apt-get -qqfuy install git
   fi
   echo "$CMARK Git installed"
-elif [ "$DISTRO" = "Chromebook" ]; then
-  # Chromebook is pretty restricted, so let's do the bare minimum here and rely
-  # on crouton for the rest
-  DOTFILES_TARBALL="https://github.com/fortes/dotfiles/archive/master.tar.gz"
-  if [ -d "$DOTFILES" ]; then
-    rm -rf "$HOME/dotfiles"
-  fi
-
-  wget "$DOTFILES_TARBALL" -O "$HOME/dotfiles.tar.gz"
-  mkdir -p "$DOTFILES"
-  echo "$ARROW Downloading latest dotfiles to $DOTFILES"
-  tar zxf "$HOME/dotfiles.tar.gz" -C "$DOTFILES" --strip-components=1
-  rm "$HOME/dotfiles.tar.gz"
-  echo "$CMARK dotfiles updated"
-
-  echo "$ARROW Downloading crouton script to ~/Downloads/"
-  wget "https://goo.gl/fd3zc" -O "$HOME/Downloads/crouton" -q
-  echo "$ARROW Installing crouton bin tools (requires sudo)"
-  sudo sh "$HOME/Downloads/crouton" -b
-
-  echo "$ARROW Linking dotfiles"
-  (bash "$HOME/dotfiles/scripts/link-dotfiles.sh" -f)
-
-  echo "$CMARK Limited crosh setup complete"
-  exit
 else
   echo "$XMARK Sorry, but your system ($OS) is not supported"
   exit 1
 fi
 
-if [ $DISTRO = "Chromebook" ]; then
-  # Chromebook is pretty restricted, so let's do the bare minimum here and rely
-  # on crouton for the rest
-  DOTFILES_TARBALL="https://github.com/fortes/dotfiles/archive/master.tar.gz"
-  if [ -d "$DOTFILES" ]; then
-    rm -rf "$HOME/dotfiles.old"
-    echo "Moving previous ~/dotfiles to ~/dotfiles.old"
-    mv "$DOTFILES" "$DOTFILES".old
-  fi
-
-  if [ ! -d "$DOTFILES" ]; then
-    wget "$DOTFILES_TARBALL" -O "$HOME/dotfiles.tar.gz"
-    mkdir -p "$DOTFILES"
-    echo "Downloading latest dotfiles to $DOTFILES"
-    tar zxf "$HOME/dotfiles.tar.gz" -C "$DOTFILES" --strip-components=1
-    rm "$HOME/dotfiles.tar.gz"
-  fi
+# Pull down the full repo
+if [ ! -d "$DOTFILES" ]; then
+  echo "Cloning dotfiles repo to $DOTFILES"
+  git clone "$DOTFILESREPO" "$DOTFILES" > /dev/null
 else
-  # Pull down the full repo
-  if [ ! -d "$DOTFILES" ]; then
-    echo "Cloning dotfiles repo to $DOTFILES"
-    git clone http://github.com/fortes/dotfiles "$DOTFILES" > /dev/null
-  else
-    echo "Pulling latest dotfiles..."
-    (cd "$DOTFILES"; git pull 2> /dev/null || true)
-  fi
+  echo "Pulling latest dotfiles..."
+  (cd "$DOTFILES"; git pull 2> /dev/null || true)
 fi
 echo "$CMARK ~/dotfiles present"
 

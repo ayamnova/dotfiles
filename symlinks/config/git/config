@@ -52,3 +52,6 @@
 # Local modifications / auth
 [include]
   path=~/.gitconfig.local
+[user]
+        name = ayamnova
+        email = karstenladdy@gmail.com

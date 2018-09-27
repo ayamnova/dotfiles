@@ -40,6 +40,6 @@ source ~/.profile
 source ~/.bashrc
 
 ("$HOME/dotfiles/scripts/python-setup.sh")
-("$HOME/dotfiles/scripts/node-setup.sh")
+# ("$HOME/dotfiles/scripts/node-setup.sh")
 ("$HOME/dotfiles/scripts/fzf-setup.sh")
 ("$HOME/dotfiles/scripts/nvim-setup.sh")

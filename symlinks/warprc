@@ -1,0 +1,4 @@
+dot:~/dotfiles
+conf:~/.config
+REU:~/aprojects/REU
+PY3LIB:~/.local/lib/python3.5/site-packages

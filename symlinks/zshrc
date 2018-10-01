@@ -2,11 +2,24 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-  export ZSH=/home/ayamnova/.oh-my-zsh
+  export ZSH=$HOME/.oh-my-zsh
 
 #Add my own custom bin to path
   export PATH=$PATH:$HOME/.bin
   export PATH=$PATH:$HOME/.local/bin
+
+# ZPLUG
+
+source ~/.zplug/init.zsh
+
+# Get my dracula theme. Boo yeah!
+zplug "dracula/zsh", as:theme
+
+# Autocomplete
+
+zplug 'zsh-users/zsh-autosuggestions', as:plugin, from:github
+
+zplug load --verbose
 
 #Add custom dircolors
   #eval $(dircolors -b ~/.dircolorsrc)
@@ -81,7 +94,6 @@ plugins=(
   git-extras
   wd
   zsh-dircolors-solarized
-  zsh-autosuggestions
   dirhistory
 )
 

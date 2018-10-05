@@ -19,8 +19,6 @@ zplug "dracula/zsh", as:theme
 
 zplug 'zsh-users/zsh-autosuggestions', as:plugin, from:github
 
-zplug load --verbose
-
 #Add custom dircolors
   #eval $(dircolors -b ~/.dircolorsrc)
   #export LS_OPTIONS='--color=auto'
@@ -37,7 +35,7 @@ BASE16_SHELL=$HOME/.config/base16-shell/
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="dracula"
+# ZSH_THEME="dracula"
 
 # Set list of themes to load
 # Setting this variable when ZSH_THEME=random
@@ -132,7 +130,7 @@ source $ZSH/oh-my-zsh.sh
 
 #fzf and ag configuration
 
-# fzf + ag configuration
+ fzf + ag configuration
 if _has fzf && _has ag; then
   export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -142,3 +140,5 @@ if _has fzf && _has ag; then
   --color info:108,prompt:109,spinner:108,pointer:168,marker:168
   '
 fi
+
+zplug load

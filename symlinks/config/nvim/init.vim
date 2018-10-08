@@ -167,6 +167,11 @@ Plug 'mattn/emmet-vim'
 
 " }}}
 
+" Markdown {{{
+Plug 'vim-pandoc/vim-pandoc'
+Plug 'vim-pandoc/vim-pandoc-syntax'
+" }}}
+
 " }}}
 
 "Fuzzy file searching until I get fzf working
@@ -191,6 +196,14 @@ set termguicolors
 colorscheme dracula
 
 "---------------------PLUGIN CONFIGURATION------------------------------------
+
+
+" Pandoc {{{
+
+" set filetypes to include .md
+" let g:pandoc#filetypes#handled = ["pandoc", "markdown", "md"]
+
+" }}}
 
 " Deoplete {{{
 
@@ -306,6 +319,11 @@ let g:airline_powerline_fonts = 1
 
 " change leader to comma
 let mapleader=','
+
+" unmap spacebar
+nnoremap <Space> <Nop>
+" change local leader to spacebar
+let maplocalleader="\<Space>"
 
 " edit zsh config with ,ez
 nnoremap <leader>ez :vsp ~/.zshrc<CR>

@@ -68,7 +68,7 @@ Plug 'tpope/vim-commentary'
 " - cs/ds<arg1><arg2> change / delete
 " - ys<obj><arg> surrounds text object
 " - yss<arg> for entire line
-"Plug 'tpope/vim-surround'
+Plug 'tpope/vim-surround'
 
 
 " Complete words from tmux with <C-x><C-u>

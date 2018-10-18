@@ -167,6 +167,10 @@ Plug 'mattn/emmet-vim'
 
 " }}}
 
+" Wiki {{{
+Plug 'fcpg/vim-waikiki'
+" }}}
+
 " Markdown {{{
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
@@ -197,7 +201,10 @@ colorscheme dracula
 
 "---------------------PLUGIN CONFIGURATION------------------------------------
 
-
+" Waiki {{{
+let g:waikiki_roots = ['~/adocs/notes/']
+let g:waikiki_default_maps = 1
+" }}}
 " Pandoc {{{
 
 " set filetypes to include .md

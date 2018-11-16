@@ -190,6 +190,8 @@ call plug#end()
 "Enables tab-completion in the commandline
 set wildmenu
 
+"Disable Python2 Support
+let g:loaded_python_provider = 1
 
 "---------------------Colorscheme Configuration------------------------------
 
@@ -294,6 +296,9 @@ autocmd FileType python nnoremap <buffer>
 
 "Automatically start language servers
 let g:LanguageClient_autoStart = 1
+
+let g:LanguageClient_loggingFile = "/home/karsten/.config/nvim/lclient.log"
+let g:LanguageClient_loggingLevel = 'DEBUG'
 
 " }}}
 

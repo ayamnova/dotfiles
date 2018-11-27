@@ -110,6 +110,9 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ 'do': 'bash install.sh',
     \ }
 
+"CSharp
+Plug 'OmniSharp/omnisharp-vim'
+
 "Snippets
 Plug 'Shougo/neosnippet.vim'
 
@@ -296,9 +299,6 @@ autocmd FileType python nnoremap <buffer>
 
 "Automatically start language servers
 let g:LanguageClient_autoStart = 1
-
-let g:LanguageClient_loggingFile = "/home/karsten/.config/nvim/lclient.log"
-let g:LanguageClient_loggingLevel = 'DEBUG'
 
 " }}}
 

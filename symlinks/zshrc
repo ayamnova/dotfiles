@@ -142,8 +142,6 @@ source $ZSH/oh-my-zsh.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-#fzf and ag configuration
-
 # fzf + ag configuration
 if _has fzf && _has ag; then
   export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
@@ -154,5 +152,8 @@ if _has fzf && _has ag; then
   --color info:108,prompt:109,spinner:108,pointer:168,marker:168
   '
 fi
+
+# Anaconda configuration
+export PATH="/home/karsten/opt/anaconda3/bin":$PATH
 
 zplug load

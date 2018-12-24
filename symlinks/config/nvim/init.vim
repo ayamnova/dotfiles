@@ -209,10 +209,6 @@ colorscheme dracula
 
 "---------------------PLUGIN CONFIGURATION------------------------------------
 
-" Waiki {{{
-let g:waikiki_roots = ['~/adocs/notes/']
-let g:waikiki_default_maps = 1
-" }}}
 " Pandoc {{{
 
 " set filetypes to include .md

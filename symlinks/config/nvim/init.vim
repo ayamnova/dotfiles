@@ -116,6 +116,9 @@ Plug 'OmniSharp/omnisharp-vim'
 "Snippets
 Plug 'Shougo/neosnippet.vim'
 
+"Context-sensitive snippets
+Plug 'Shougo/context_filetype.vim'
+
 "Default Snippets
 Plug 'Shougo/neosnippet-snippets'
 Plug 'honza/vim-snippets'
@@ -299,6 +302,14 @@ autocmd FileType python nnoremap <buffer>
 
 "Automatically start language servers
 let g:LanguageClient_autoStart = 1
+
+" }}}
+
+" Linting Configuration {{{
+
+let g:ale_linters = {
+\ 'cs': ['OmniSharp']
+\}
 
 " }}}
 

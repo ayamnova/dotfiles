@@ -173,10 +173,6 @@ Plug 'mattn/emmet-vim'
 
 " }}}
 
-" Wiki {{{
-Plug 'fcpg/vim-waikiki'
-" }}}
-
 " Markdown {{{
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
@@ -216,6 +212,10 @@ colorscheme dracula
 
 " }}}
 
+" Snippets {{{
+let g:neosnippet#snippets_directory = '~/.config/nvim/snippets/'
+" }}}
+
 " Deoplete {{{
 
 " Autostart deoplete
@@ -250,29 +250,34 @@ imap <expr><C-u> pumvisible() ? "\<PageUp>" : "\<C-u>"
 "inoremap <silent><expr><CR> pumvisible() ?
 "	\ (neosnippet#expandable() ? neosnippet#mappings#expand_impl() : deoplete#close_popup())
 "\ : (delimitMate#WithinEmptyPair() ? "\<C-R>=delimitMate#ExpandReturn()\<CR>" : "\<CR>")
-
+"imap <expr><CR> neosnippet#expandable() ? "\<Plug>(neosnippet_expand)" : "\<CR>"
+imap <expr><TAB>
+\ neosnippet#expandable_or_jumpable() ?
+\    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
 " <Tab> completion:
 " 1. If popup menu is visible, select and insert next item
 " 2. Otherwise, if within a snippet, jump to next input
 " 3. Otherwise, if preceding chars are whitespace, insert tab char
 " 4. Otherwise, start manual autocomplete
-imap <silent><expr><Tab> pumvisible() ? "\<Down>"
-	\ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
-	\ : (<SID>is_whitespace() ? "\<Tab>"
-	\ : deoplete#manual_complete()))
+"imap <silent><expr><Tab> pumvisible() ? "\<Down>"
+"	\ : (neosnippet#jumpable() ? "i_<Plug>(neosnippet_jump)"
+"	\ : (<SID>is_whitespace() ? "\<Tab>"
+"	\ : deoplete#manual_complete()))
 
-smap <silent><expr><Tab> pumvisible() ? "\<Down>"
-	\ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
-	\ : (<SID>is_whitespace() ? "\<Tab>"
-	\ : deoplete#manual_complete()))
+"smap <silent><expr><Tab> pumvisible() ? "\<Down>"
+	"\ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
+	"\ : (<SID>is_whitespace() ? "\<Tab>"
+	"\ : deoplete#manual_complete()))
 
-inoremap <expr><S-Tab>  pumvisible() ? "\<Up>" : "\<C-h>"
+"inoremap <expr><S-Tab>  pumvisible() ? "\<Up>" : "\<C-h>"
 
-function! s:is_whitespace() "{{{
-	let col = col('.') - 1
-	return ! col || getline('.')[col - 1] =~? '\s'
-endfunction "}}}
+"function! s:is_whitespace() "{{{
+"	let col = col('.') - 1
+"	return ! col || getline('.')[col - 1] =~? '\s'
+"endfunction "}}}
 
 " }}}
 

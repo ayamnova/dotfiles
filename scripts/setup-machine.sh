@@ -43,3 +43,4 @@ source ~/.bashrc
 # ("$HOME/dotfiles/scripts/node-setup.sh")
 ("$HOME/dotfiles/scripts/fzf-setup.sh")
 ("$HOME/dotfiles/scripts/nvim-setup.sh")
+("$HOME/dotfiles/scripts/zsh-setup.sh")

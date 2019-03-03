@@ -156,6 +156,9 @@ if _has fzf && _has ag; then
   '
 fi
 
+# pyenv integration
+eval "$(pyenv init -)"
+
 # Anaconda configuration
 # export PATH="/home/karsten/opt/anaconda3/bin":$PATH
 

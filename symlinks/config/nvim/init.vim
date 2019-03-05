@@ -1,6 +1,11 @@
 filetype off                  " required
 "put this line first in ~/.vimrc
 set nocompatible | filetype indent plugin on | syn on "automatically installs vim-plug if it is not installed
+
+" Python Virtual Environments 
+let g:python_host_prog = glob("~/.pyenv/versions/neovim2/bin/python")
+let g:python3_host_prog = glob("~/.pyenv/versions/neovim3/bin/python")
+
 if empty(glob('~/.config/autoload/plug.vim'))
   silent !curl -fLo ~/.config/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim

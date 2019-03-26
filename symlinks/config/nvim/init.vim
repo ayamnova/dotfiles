@@ -1,3 +1,5 @@
+vim:ft=vim:fdm=marker
+
 filetype off                  " required
 "put this line first in ~/.vimrc
 set nocompatible | filetype indent plugin on | syn on "automatically installs vim-plug if it is not installed

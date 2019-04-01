@@ -1,4 +1,4 @@
-vim:ft=vim:fdm=marker
+"vim:fdm=marker
 
 filetype off                  " required
 "put this line first in ~/.vimrc
@@ -210,6 +210,7 @@ set termguicolors
 "Set the colorscheme
 colorscheme dracula
 
+
 "---------------------PLUGIN CONFIGURATION------------------------------------
 
 " Pandoc {{{
@@ -394,6 +395,14 @@ endif
 "}}}
 
 "KEY BINDINGS {{{
+
+" ARROW KEYS {{{
+" Make the arrow kes resise the pane
+nnoremap <Left> :vertical resize -1<CR>
+nnoremap <Right> :vertical resize +1<CR>
+nnoremap <Up> :resize -1<CR>
+nnoremap <Down> :resize +1<CR>
+" }}}
 
 " bind K to grep word under cursor
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>

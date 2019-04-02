@@ -36,6 +36,8 @@ zplug "dracula/zsh", as:theme
 
 zplug 'zsh-users/zsh-autosuggestions', as:plugin, from:github
 
+zplug 'joel-porquet/zsh-dircolors-solarized', as:plugin, from:github
+
 #Add custom dircolors
   #eval $(dircolors -b ~/.dircolorsrc)
   #export LS_OPTIONS='--color=auto'
@@ -44,7 +46,8 @@ zplug 'zsh-users/zsh-autosuggestions', as:plugin, from:github
 # available options:
 # 	dircolors.256dark, dircolors.ansi-dark 
 # 	dircolors.ansi-light, dircolors.ansi-universal
-  export DIRCOLORTHEME='dircolors.ansi-dark'
+#  export DIRCOLORTHEME='dircolors.ansi-dark'
+export DIRCOLORTHEME='dircolors.ansi-light'
 
 # Konsole Color Theme
 BASE16_SHELL=$HOME/.config/base16-shell/
@@ -108,7 +111,6 @@ plugins=(
   dirhistory
   git-extras
   wd
-  zsh-dircolors-solarized
   dirhistory
 )
 

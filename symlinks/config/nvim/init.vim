@@ -397,11 +397,17 @@ endif
 "KEY BINDINGS {{{
 
 " ARROW KEYS {{{
-" Make the arrow kes resise the pane
+" Make the arrow kes resize the pane
 nnoremap <Left> :vertical resize -1<CR>
 nnoremap <Right> :vertical resize +1<CR>
 nnoremap <Up> :resize -1<CR>
 nnoremap <Down> :resize +1<CR>
+
+" Make the Alt+{h,j,k,l} resize the pane
+nnoremap <A-l> :vertical resize -1<CR>
+nnoremap <A-h> :vertical resize +1<CR>
+nnoremap <A-j> :resize -1<CR>
+nnoremap <A-k> :resize +1<CR>
 " }}}
 
 " bind K to grep word under cursor

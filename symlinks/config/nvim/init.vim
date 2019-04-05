@@ -1,13 +1,16 @@
-"vim:fdm=marker
+vim:tw=78:ts=8:fdm=marker:
 
 filetype off                  " required
 "put this line first in ~/.vimrc
-set nocompatible | filetype indent plugin on | syn on "automatically installs vim-plug if it is not installed
+set nocompatible | filetype indent plugin on | syn on
 
 " Python Virtual Environments 
 let g:python_host_prog = glob("~/.pyenv/versions/neovim2/bin/python")
 let g:python3_host_prog = glob("~/.pyenv/versions/neovim3/bin/python")
 
+" Plugins {{{
+
+" Install Vim-Plug automatically if it is not installed
 if empty(glob('~/.config/autoload/plug.vim'))
   silent !curl -fLo ~/.config/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -16,34 +19,31 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
-" COLORS {{{
-
-"Some really nice looking base16 themes
-Plug 'chriskempson/base16-vim' 
+" Editor Themes {{{
 
 "A solid dark theme (non base16)
 Plug 'dracula/vim' 
-
-"Shade indent levels
-Plug 'nathanaelkane/vim-indent-guides'
-
-" }}}
-
-" SYSTEM {{{
 
 "Light-weight status line
 Plug 'vim-airline/vim-airline'
 
 "Themes for airline
 Plug 'vim-airline/vim-airline-themes'
+"
+"Shade indent levels
+Plug 'nathanaelkane/vim-indent-guides'
 
-"File explorer
-Plug 'scrooloose/nerdtree' 
-
-" TMUX {{{
+" TMUX Integration {{{
 
 "Enables easy pane / window naviagation between nvim and tmux
+" <CTRL-h> Move to the left
+" <CTRL-j> Move to up
+" <CTRL-k> Move to down
+" <CTRL-l> Move to right
 Plug 'christoomey/vim-tmux-navigator' 
+
+" Complete words from tmux with <C-x><C-u>
+Plug 'wellle/tmux-complete.vim'
 
 "Makes tmux and vim share status lines
 Plug 'edkolev/tmuxline.vim' 
@@ -51,6 +51,9 @@ Plug 'edkolev/tmuxline.vim'
 " }}}
 
 " EDITOR {{{
+
+"File explorer
+Plug 'scrooloose/nerdtree'
 
 "Great defaults for complementary mappings
 " [a previous file in args list
@@ -69,18 +72,12 @@ Plug 'cohama/lexima.vim'
 " - gc{motion} comment / uncomment lines for motion
 Plug 'tpope/vim-commentary'
 
-
 " Edit surrounding quotes / parents / etc
 " - {Visual}S<arg> surrounds selection
 " - cs/ds<arg1><arg2> change / delete
 " - ys<obj><arg> surrounds text object
 " - yss<arg> for entire line
 Plug 'tpope/vim-surround'
-
-
-" Complete words from tmux with <C-x><C-u>
-Plug 'wellle/tmux-complete.vim'
-
 "}}}
 
 " FILE / BUFFER HANDLING {{{
@@ -187,12 +184,11 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 
 " }}}
 
-"Fuzzy file searching until I get fzf working
-"Plug 'kien/ctrlp.vim'
-
 " }}}
 
 call plug#end()
+
+"}}}
 
 "---------------------Environment Setup-------------------------------------
 

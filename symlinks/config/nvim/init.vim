@@ -1,5 +1,3 @@
-vim:tw=78:ts=8:fdm=marker:
-
 filetype off                  " required
 "put this line first in ~/.vimrc
 set nocompatible | filetype indent plugin on | syn on
@@ -209,15 +207,14 @@ colorscheme dracula
 
 "---------------------PLUGIN CONFIGURATION------------------------------------
 
-" Pandoc {{{
-
-" set filetypes to include .md
-" let g:pandoc#filetypes#handled = ["pandoc", "markdown", "md"]
-
-" }}}
-
-" Snippets {{{
+" NeoSnippets {{{
 let g:neosnippet#snippets_directory = '~/.config/nvim/snippets/'
+
+" When I push <C-l> and I have a snippet completely typed before the cursor,
+" expand the snippet and move through the snippet with <C-l>
+imap <expr><C-l> neosnippet#expandable_or_jumpable()
+        \ ? "\<Plug>(neosnippet_expand_or_jump)"
+        \ : "\<C-n>"
 " }}}
 
 " Deoplete {{{
@@ -225,63 +222,17 @@ let g:neosnippet#snippets_directory = '~/.config/nvim/snippets/'
 " Autostart deoplete
 let g:deoplete#enable_at_startup = 1
 
-" Keybindings {{{  
-" <C-j> Move down
-" <C-k> Move up
-" <ENTER> Accept completion
-" <Tab> Move through snippet
-" }}}
+" After completing a candidate, close the preview window
+autocmd CompleteDone * silent! pclose!
 
-" Movement within 'ins-completion-menu'
-imap <expr><C-j>   pumvisible() ? "\<Down>" : "\<C-j>"
-imap <expr><C-k>   pumvisible() ? "\<Up>" : "\<C-k>"
+" When I delete a character with <C-h>, resource all the candidates
+inoremap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
 
-" Scroll pages in menu
-inoremap <expr><C-f> pumvisible() ? "\<PageDown>" : "\<Right>"
-inoremap <expr><C-b> pumvisible() ? "\<PageUp>" : "\<Left>"
-imap     <expr><C-d> pumvisible() ? "\<PageDown>" : "\<C-d>"
-imap <expr><C-u> pumvisible() ? "\<PageUp>" : "\<C-u>"  
-
-" <CR>: If popup menu visible, expand snippet or close popup with selection,
-"       Otherwise, check if within empty pair and use delimitMate.
-"inoremap <silent><expr><CR> pumvisible() ? "\<CR>"
-"	\ (neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : deoplete#close_popup()) 
-"	\ : deopolete#manual_complete() 
-"	\ : (<SID>is_whitespace() ? "\<CR>")
-"	(delimitMate#WithinEmptyPair() ? "\<C-R>=delimitMate#ExpandReturn()\<CR>" 
-
-
-"inoremap <silent><expr><CR> pumvisible() ?
-"	\ (neosnippet#expandable() ? neosnippet#mappings#expand_impl() : deoplete#close_popup())
-"\ : (delimitMate#WithinEmptyPair() ? "\<C-R>=delimitMate#ExpandReturn()\<CR>" : "\<CR>")
-"imap <expr><CR> neosnippet#expandable() ? "\<Plug>(neosnippet_expand)" : "\<CR>"
-imap <expr><TAB>
-\ neosnippet#expandable_or_jumpable() ?
-\    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-
-" <Tab> completion:
-" 1. If popup menu is visible, select and insert next item
-" 2. Otherwise, if within a snippet, jump to next input
-" 3. Otherwise, if preceding chars are whitespace, insert tab char
-" 4. Otherwise, start manual autocomplete
-"imap <silent><expr><Tab> pumvisible() ? "\<Down>"
-"	\ : (neosnippet#jumpable() ? "i_<Plug>(neosnippet_jump)"
-"	\ : (<SID>is_whitespace() ? "\<Tab>"
-"	\ : deoplete#manual_complete()))
-
-"smap <silent><expr><Tab> pumvisible() ? "\<Down>"
-	"\ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
-	"\ : (<SID>is_whitespace() ? "\<Tab>"
-	"\ : deoplete#manual_complete()))
-
-"inoremap <expr><S-Tab>  pumvisible() ? "\<Up>" : "\<C-h>"
-
-"function! s:is_whitespace() "{{{
-"	let col = col('.') - 1
-"	return ! col || getline('.')[col - 1] =~? '\s'
-"endfunction "}}}
+" When the popup window is open and I push <CR>, close the popup window save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function() abort
+        return deoplete#close_popup() . "\<CR>"
+endfunction
 
 " }}}
 
@@ -421,3 +372,4 @@ command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 "command to make tags file for a given root directory
 command MakeTags !ctags -R .
 
+"vim:tw=78:ts=8:fdm=marker:

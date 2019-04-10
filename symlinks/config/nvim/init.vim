@@ -228,6 +228,9 @@ autocmd CompleteDone * silent! pclose!
 " When I delete a character with <C-h>, resource all the candidates
 inoremap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
 
+" TAB
+inoremap <TAB> <TAB>
+
 " When the popup window is open and I push <CR>, close the popup window save indent.
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function() abort

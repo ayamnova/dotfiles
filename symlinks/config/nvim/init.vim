@@ -62,9 +62,6 @@ Plug 'scrooloose/nerdtree'
 " ]f next file 
 Plug 'tpope/vim-unimpaired'
 
-"Auto-close parens / quotes
-Plug 'cohama/lexima.vim'
-
 "Comment / uncomment things quickly
 " {Visual}gc comment / uncomment selection
 " - gc{motion} comment / uncomment lines for motion

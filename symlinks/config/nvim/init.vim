@@ -1,8 +1,8 @@
-filetype off                  " required
+"filetype off                  " required
 "put this line first in ~/.vimrc
-set nocompatible | filetype indent plugin on | syn on
+"set nocompatible | filetype indent plugin on | syn on
 
-" Python Virtual Environments 
+" Python Virtual Environments
 let g:python_host_prog = glob("~/.pyenv/versions/neovim2/bin/python")
 let g:python3_host_prog = glob("~/.pyenv/versions/neovim3/bin/python")
 

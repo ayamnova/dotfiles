@@ -162,3 +162,5 @@ fi
 # export PATH="/home/karsten/opt/anaconda3/bin":$PATH
 
 zplug load
+
+bindkey ' ' magic-space

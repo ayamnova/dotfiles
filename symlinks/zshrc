@@ -25,6 +25,9 @@ _has(){
   export PATH=$HOME/bin:$PATH
   export PATH=$HOME/.bin:$PATH
 
+# Make sure nvm loads lazily
+export NVM_LAZY_LOAD=true
+
 # ZPLUG
 
 source ~/.zplug/init.zsh
@@ -37,6 +40,8 @@ zplug "dracula/zsh", as:theme
 zplug 'zsh-users/zsh-autosuggestions', as:plugin, from:github
 
 zplug 'joel-porquet/zsh-dircolors-solarized', as:plugin, from:github
+
+zplug 'lukechilds/zsh-nvm', as:plugin, from:github
 
 #Add custom dircolors
   #eval $(dircolors -b ~/.dircolorsrc)

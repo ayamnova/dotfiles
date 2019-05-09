@@ -43,6 +43,9 @@ zplug 'joel-porquet/zsh-dircolors-solarized', as:plugin, from:github
 
 zplug 'lukechilds/zsh-nvm', as:plugin, from:github
 
+# Add npm completion options
+zplug "lukechilds/zsh-better-npm-completion", as:plugin, from:github, defer:2
+
 #Add custom dircolors
   #eval $(dircolors -b ~/.dircolorsrc)
   #export LS_OPTIONS='--color=auto'

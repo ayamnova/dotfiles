@@ -46,6 +46,10 @@ zplug 'lukechilds/zsh-nvm', as:plugin, from:github
 # Add npm completion options
 zplug "lukechilds/zsh-better-npm-completion", as:plugin, from:github, defer:2
 
+# Automatically install pyenv
+zplug "mattberther/zsh-pyenv", as:plug, from:github
+
+
 #Add custom dircolors
   #eval $(dircolors -b ~/.dircolorsrc)
   #export LS_OPTIONS='--color=auto'

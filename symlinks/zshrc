@@ -47,7 +47,11 @@ zplug 'lukechilds/zsh-nvm', as:plugin, from:github
 zplug "lukechilds/zsh-better-npm-completion", as:plugin, from:github, defer:2
 
 # Automatically install pyenv
-zplug "mattberther/zsh-pyenv", as:plugin, from:github
+#zplug "mattberther/zsh-pyenv", as:plugin, from:github
+zplug "ayamnova/zsh-pyenv", as:plugin, from:github
+
+# Lazy loading of pyenv
+# zplug "davidparsson/zsh-pyenv-lazy", as:plugin, from:github
 
 
 #Add custom dircolors

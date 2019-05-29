@@ -24,6 +24,46 @@ export FZF_DEFAULT_OPTS='
 '
 # }}}
 
+# Spaceship Prompt {{{
+
+SPACESHIP_PROMPT_ORDER=(
+  # time          # Time stamps section
+  # user          # Username section
+  dir           # Current directory section
+  # host          # Hostname section
+  git           # Git section (git_branch + git_status)
+  # hg            # Mercurial section (hg_branch  + hg_status)
+  # package       # Package version
+  node          # Node.js section
+  # ruby          # Ruby section
+  # elixir        # Elixir section
+  # xcode         # Xcode section
+  # swift         # Swift section
+  # golang        # Go section
+  # php           # PHP section
+  # rust          # Rust section
+  # haskell       # Haskell Stack section
+  # julia         # Julia section
+  # docker        # Docker section
+  # aws           # Amazon Web Services section
+  # venv          # virtualenv section
+  conda         # conda virtualenv section
+  pyenv         # Pyenv section
+  dotnet        # .NET section
+  # ember         # Ember.js section
+  # kubecontext   # Kubectl context section
+  # terraform     # Terraform workspace section
+  exec_time     # Execution time
+  line_sep      # Line break
+  # battery       # Battery level and status
+  # vi_mode       # Vi-mode indicator
+  # jobs          # Background jobs indicator
+  exit_code     # Exit code section
+  char          # Prompt character
+  )
+
+# }}}
+
 # NVM {{{  
 
 # Make sure nvm loads lazily
@@ -35,8 +75,11 @@ export NVM_LAZY_LOAD=true
 
 # Plugins {{{
 
+# Lit prompt
+zplug denysdovhan/spaceship-prompt, use:spaceship.zsh, from:github, as:theme
+
 # Make my terminal beautiful
-zplug "dracula/zsh", as:theme
+#zplug "dracula/zsh", as:theme
 
 # Make the ls options legible
 zplug "liangguohuan/zsh-dircolors-solarized", as:plugin
@@ -53,6 +96,9 @@ zplug "ayamnova/zsh-pyenv", as:plugin, from:github
 # Warp Directory
 zplug 'mfaerevaag/wd', as:command, use:"wd.sh", hook-load:"wd() { . $ZPLUG_REPOS/mfaerevaag/wd/wd.sh }"
 
+# Highlight commandline text
+
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug load
 
 # }}}

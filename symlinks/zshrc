@@ -2,6 +2,13 @@
 
 source ~/.zplug/init.zsh
 
+# History Settings {{{
+HISTFILE=~/.zshhist
+HISTSIZE=1000
+SAVEHIST=1000
+setopt appendhistory
+#}}}
+
 # Aliases {{{
 
 # Make ls colorful

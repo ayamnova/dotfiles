@@ -283,8 +283,41 @@ let g:ale_linters = {
       \ 'ctrl-x': 'split',
       \ 'ctrl-v': 'vsplit' }
 
-nnoremap <c-p> :FZF<cr>
+" Files
+"<Leader>f to search through Git-tracked files
+nmap <Leader>f :GFiles<CR> 
+"<Leader>F to search through all files
+nmap <Leader>F :Files<CR>  
 
+" Buffers
+"<Leader>b to search through open buffers
+nmap <Leader>b :Buffers<CR> 
+"<Leader>h to search through buffer history
+nmap <Leader>h :History<CR> 
+
+" Tags
+"<Leader>t to search through tags in open buffer
+nmap <Leader>t :BTags<CR> 
+"<Leader>T to search through tags across projects (good with gutentags)
+nmap <Leader>T :Tags<CR> 
+
+" Lines
+"<Leader>l to serach through lines in current buffer
+nmap <Leader>l :BLines<CR> 
+"<Leader>L to search through lines in loaded buffers
+nmap <Leader>L :Lines<CR> 
+"<Leader>' to search through marked lines
+nmap <Leader>' :Marks<CR> 
+"<Leader>a to search through project
+nmap <Leader>a :Ag<Space> 
+"<Leader>H to search through help tags
+nmap <Leader>H :Helptags!<CR> 
+"<Leader>C to search through commands
+nmap <Leader>C :Commands<CR> 
+"<Leader>: to search through history
+nmap <Leader>: :History:<CR> 
+"<Leader>/ to search through search history
+nmap <Leader>/ :History/<CR> 
 " }}}
 
 "NERDTREE {{{

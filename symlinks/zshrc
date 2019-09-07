@@ -56,7 +56,7 @@ SPACESHIP_PROMPT_ORDER=(
   # venv          # virtualenv section
   conda         # conda virtualenv section
   pyenv         # Pyenv section
-  dotnet        # .NET section
+  # dotnet        # .NET section
   # ember         # Ember.js section
   # kubecontext   # Kubectl context section
   # terraform     # Terraform workspace section
@@ -113,7 +113,7 @@ zplug load
 # Environment Variables {{{
 
 # PATH
-export PATH=$HOME/.bin:$HOME/.local/bin:$PATH
+export PATH=$HOME/.bin:$HOME/.local/bin:$HOME/.config/composer/vendor/bin:$PATH
 
 # Change the color of ls output so it is light against the dark dracula background
 export DIRCOLORTHEME='dircolors.ansi-light'

@@ -283,41 +283,7 @@ let g:ale_linters = {
       \ 'ctrl-x': 'split',
       \ 'ctrl-v': 'vsplit' }
 
-" Files
-"<Leader>f to search through Git-tracked files
-nmap <Leader>f :GFiles<CR> 
-"<Leader>F to search through all files
-nmap <Leader>F :Files<CR>  
 
-" Buffers
-"<Leader>b to search through open buffers
-nmap <Leader>b :Buffers<CR> 
-"<Leader>h to search through buffer history
-nmap <Leader>h :History<CR> 
-
-" Tags
-"<Leader>t to search through tags in open buffer
-nmap <Leader>t :BTags<CR> 
-"<Leader>T to search through tags across projects (good with gutentags)
-nmap <Leader>T :Tags<CR> 
-
-" Lines
-"<Leader>l to serach through lines in current buffer
-nmap <Leader>l :BLines<CR> 
-"<Leader>L to search through lines in loaded buffers
-nmap <Leader>L :Lines<CR> 
-"<Leader>' to search through marked lines
-nmap <Leader>' :Marks<CR> 
-"<Leader>a to search through project
-nmap <Leader>a :Ag<Space> 
-"<Leader>H to search through help tags
-nmap <Leader>H :Helptags!<CR> 
-"<Leader>C to search through commands
-nmap <Leader>C :Commands<CR> 
-"<Leader>: to search through history
-nmap <Leader>: :History:<CR> 
-"<Leader>/ to search through search history
-nmap <Leader>/ :History/<CR> 
 " }}}
 
 "NERDTREE {{{
@@ -335,6 +301,10 @@ let NERDTreeAutoDeleteBuffer=1
 let g:airline_powerline_fonts = 1
 
 "}}}
+
+" TERMINAL {{{
+tnoremap <Esc> <C-\><C-n>
+" }}}
 
 " LEADER COMMANDS {{{ 
 
@@ -355,6 +325,44 @@ nnoremap <leader>ev :vsp $MYVIMRC<CR>
 " source init.vim with ,sv
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
+" FZF searching {{{
+
+" Files
+"<leader>f to search through Git-tracked files
+nnoremap <leader>f :GFiles<CR> 
+"<leader>F to search through all files
+nnoremap <leader>F :Files<CR>  
+
+" Buffers
+"<leader>b to search through open buffers
+nnoremap <leader>b :Buffers<CR> 
+"<leader>h to search through buffer history
+nnoremap <leader>h :History<CR> 
+
+" Tags
+"<leader>t to search through tags in open buffer
+nnoremap <leader>t :BTags<CR> 
+"<leader>T to search through tags across projects (good with gutentags)
+nnoremap <leader>T :Tags<CR> 
+
+" Lines
+"<leader>l to serach through lines in current buffer
+nnoremap <leader>l :BLines<CR> 
+"<leader>L to search through lines in loaded buffers
+nnoremap <leader>L :Lines<CR> 
+"<leader>' to search through marked lines
+nnoremap <leader>' :Marks<CR> 
+"<leader>a to search through project
+nnoremap <leader>a :Ag<Space> 
+"<leader>H to search through help tags
+nnoremap <leader>H :Helptags!<CR> 
+"<leader>C to search through commands
+nnoremap <leader>C :Commands<CR> 
+"<leader>: to search through history
+nnoremap <leader>: :History:<CR> 
+"<leader>/ to search through search history
+nnoremap <leader>/ :History/<CR> 
+" }}} 
 " }}}
 " activates syntax highlighting among other things
 syntax on

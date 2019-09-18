@@ -172,6 +172,10 @@ Plug 'mattn/emmet-vim'
 
 " }}}
 
+" Blade Syntax Highlighting {{{
+Plug 'jwalton512/vim-blade'
+"}}}
+
 " Markdown {{{
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
@@ -186,6 +190,9 @@ call plug#end()
 "}}}
 
 "---------------------Environment Setup-------------------------------------
+"Correct tab configuration
+set shiftwidth=4
+set tabstop=4
 
 "Enables tab-completion in the commandline
 set wildmenu

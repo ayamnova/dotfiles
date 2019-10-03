@@ -381,6 +381,10 @@ set relativenumber
 "display command in bottom right corner
 set showcmd
 
+"correct tab settings
+set tabstop=4
+set shiftwidth=4
+
 set path+=**
 
 

@@ -115,6 +115,9 @@ Plug 'OmniSharp/omnisharp-vim'
 "Snippets
 Plug 'Shougo/neosnippet.vim'
 
+"Vue Components
+Plug 'posva/vim-vue'
+
 "Context-sensitive snippets
 Plug 'Shougo/context_filetype.vim'
 

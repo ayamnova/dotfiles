@@ -114,6 +114,7 @@ Plug 'OmniSharp/omnisharp-vim'
 
 "Snippets
 Plug 'Shougo/neosnippet.vim'
+Plug 'grvcoelho/vim-javascript-snippets'
 
 "Vue Components
 Plug 'posva/vim-vue'
@@ -216,6 +217,11 @@ colorscheme dracula
 
 " NeoSnippets {{{
 let g:neosnippet#snippets_directory = '~/.config/nvim/snippets/'
+" Enable snipMate compatibility feature.
+let g:neosnippet#enable_snipmate_compatibility = 1
+
+" Tell Neosnippet about the other snippets
+let g:neosnippet#snippets_directory='~/.config/nvim/plugged/vim-snippets/snippets/'
 
 " When I push <C-l> and I have a snippet completely typed before the cursor,
 " expand the snippet and move through the snippet with <C-l>
@@ -422,7 +428,7 @@ nnoremap <A-k> :resize +1<CR>
 " }}}
 
 " Turnoff backspace
-inoremap <BS> <nop>
+"inoremap <BS> <nop>
 
 " bind K to grep word under cursor
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
@@ -437,6 +443,7 @@ nnoremap ,K :Ag<SPACE>
 command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 
 "command to make tags file for a given root directory
+command MakeTagsPHP !ctags -R . --fields=+aimlS --languages=php --output-format=e-ctags
 command MakeTags !ctags -R .
 
 "Change Tab Directory Automatically To Opened File

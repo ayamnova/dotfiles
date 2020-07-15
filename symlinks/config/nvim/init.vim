@@ -211,6 +211,9 @@ let g:loaded_python_provider = 1
 "Make sure that neovim is aware of the terminal's color settings
 set termguicolors
 
+"Make the background transparent
+let g:dracula_colorterm = 0
+
 "Set the colorscheme
 colorscheme dracula
 
@@ -462,10 +465,6 @@ set tabstop=4
 set shiftwidth=4
 
 set path+=**
-
-"make the background transparent
-let g:dracula_colorterm = 0
-
 
 "Silver Searcher {{{
 if executable('ag')

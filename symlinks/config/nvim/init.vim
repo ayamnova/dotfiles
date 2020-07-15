@@ -1,6 +1,6 @@
-"filetype off                  " required
+filetype off                  " required
 "put this line first in ~/.vimrc
-"set nocompatible | filetype indent plugin on | syn on
+set nocompatible | filetype indent plugin on | syn on
 
 " Python Virtual Environments
 let g:python_host_prog = glob("~/.pyenv/versions/neovim2/bin/python")
@@ -52,6 +52,9 @@ Plug 'edkolev/tmuxline.vim'
 
 "File explorer
 Plug 'scrooloose/nerdtree'
+
+"Tags
+Plug 'ludovicchabant/vim-gutentags'
 
 "Great defaults for complementary mappings
 " [a previous file in args list
@@ -123,7 +126,6 @@ Plug 'posva/vim-vue'
 Plug 'Shougo/context_filetype.vim'
 
 "Default Snippets
-Plug 'Shougo/neosnippet-snippets'
 Plug 'honza/vim-snippets'
 
 " }}}
@@ -214,6 +216,71 @@ colorscheme dracula
 
 
 "---------------------PLUGIN CONFIGURATION------------------------------------
+
+" Gutentags {{{
+let g:gutentags_add_default_project_roots = 0
+let g:gutentags_project_root = ['package.json', '.git']
+let g:gutentags_generate_on_new = 1
+let g:gutentags_generate_on_missing = 1
+let g:gutentags_generate_on_write = 1
+let g:gutentags_generate_on_empty_buffer = 0
+" Store tag files in a central location
+let g:gutentags_cache_dir = expand('~/.cache/ctags/')
+" Clear the tag cache with GutentagsClearCache
+command! -nargs=0 GutentagsClearCache call system('rm ' . g:gutentags_cache_dir . '/*')
+let g:gutentags_ctags_extra_args = [
+      \ '--tag-relative=yes',
+      \ '--fields=+ailmnS',
+      \ ]
+let g:gutentags_ctags_exclude = [
+      \ '*.git', '*.svg', '*.hg',
+      \ '*/tests/*',
+      \ 'build',
+      \ 'dist',
+      \ '*sites/*/files/*',
+      \ 'bin',
+      \ 'node_modules',
+      \ 'bower_components',
+      \ 'cache',
+      \ 'compiled',
+      \ 'docs',
+      \ 'example',
+      \ 'bundle',
+      \ 'vendor',
+      \ '*.md',
+      \ '*-lock.json',
+      \ '*.lock',
+      \ '*bundle*.js',
+      \ '*build*.js',
+      \ '.*rc*',
+      \ '*.json',
+      \ '*.min.*',
+      \ '*.map',
+      \ '*.bak',
+      \ '*.zip',
+      \ '*.pyc',
+      \ '*.class',
+      \ '*.sln',
+      \ '*.Master',
+      \ '*.csproj',
+      \ '*.tmp',
+      \ '*.csproj.user',
+      \ '*.cache',
+      \ '*.pdb',
+      \ 'tags*',
+      \ 'cscope.*',
+      \ '*.css',
+      \ '*.less',
+      \ '*.scss',
+      \ '*.exe', '*.dll',
+      \ '*.mp3', '*.ogg', '*.flac',
+      \ '*.swp', '*.swo',
+      \ '*.bmp', '*.gif', '*.ico', '*.jpg', '*.png',
+      \ '*.rar', '*.zip', '*.tar', '*.tar.gz', '*.tar.xz', '*.tar.bz2',
+      \ '*.pdf', '*.doc', '*.docx', '*.ppt', '*.pptx',
+      \ ]
+
+"}}}
 
 " NeoSnippets {{{
 let g:neosnippet#snippets_directory = '~/.config/nvim/snippets/'
@@ -396,6 +463,9 @@ set shiftwidth=4
 
 set path+=**
 
+"make the background transparent
+let g:dracula_colorterm = 0
+
 
 "Silver Searcher {{{
 if executable('ag')
@@ -443,7 +513,7 @@ nnoremap ,K :Ag<SPACE>
 command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 
 "command to make tags file for a given root directory
-command MakeTagsPHP !ctags -R . --fields=+aimlS --languages=php --output-format=e-ctags
+command MakeTagsPHP !ctags -R --exclude@.ctagsignore . --fields=+aimlS --languages=php --output-format=e-ctags
 command MakeTags !ctags -R .
 
 "Change Tab Directory Automatically To Opened File
@@ -458,4 +528,4 @@ endfunction()
 
 autocmd TabNewEntered * call OnTabEnter(expand("<amatch>"))
 
-"vim:tw=78:ts=8:fdm=marker:
+"vim:tw=78:ts=8:fdm=marker

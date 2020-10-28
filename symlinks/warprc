@@ -5,4 +5,6 @@ PY3LIB:~/.local/lib/python3.5/site-packages
 doc:~/adocs
 notes:~/adocs/notes
 TW:/media/veracrypt1/aprojects/twitter
-school:~/adocs/2019-2020
+money:~/adevelop/money-tracker
+school:~/Dropbox/2020-Spring
+dig:~/adevelop/digital-guide

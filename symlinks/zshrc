@@ -124,7 +124,5 @@ export DIRCOLORTHEME='dircolors.ansi-light'
 
 # map CAPS_LOCK to escape
 setxkbmap -option caps:escape
-# swap left alt and left ctrl
-setxkbmap -option ctrl:swap_lalt_lctl
 
 # }}}
